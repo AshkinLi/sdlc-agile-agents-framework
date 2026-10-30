@@ -34,9 +34,15 @@ Produce a complete `docs/PRD.md` file based on `templates/PRD-TEMPLATE.md`. The 
    - Quantify Performance (latency, throughput), Security (auth protocol, encryption standard), Reliability (uptime %, RPO/RTO), and Compatibility targets.
 6. **Declare Scope Boundaries**:
    - List explicit `In-Scope` and `Out-of-Scope` items to prevent scope creep.
+7. **Declare the Target Release Version (SemVer 2.0.0)**:
+   - Set the target release version in the PRD metadata using `MAJOR.MINOR.PATCH` (start at `0.1.0` during initial development).
+   - Classify the release impact (`MAJOR`, `MINOR`, `PATCH`) and list every breaking public API change with a migration note.
+   - Follow `skills/semantic-versioning/SKILL.md` for bump rules, precedence, and validation.
 
 ## 4. Validation Checklist (Self-Correction Before Completion)
 - [ ] Does the file follow the exact section structure of `templates/PRD-TEMPLATE.md`?
 - [ ] Does every `FR-XX` have a unique ID, MoSCoW priority, and Gherkin acceptance criteria?
 - [ ] Are all vague terms replaced with quantifiable numbers?
 - [ ] Are all `[TBD]` placeholders resolved or explicitly listed in the Open Questions table with an assigned owner?
+- [ ] Does the PRD declare a valid SemVer 2.0.0 target release version and a version impact?
+- [ ] Are all breaking public API changes listed with a migration note and a `MAJOR` bump?

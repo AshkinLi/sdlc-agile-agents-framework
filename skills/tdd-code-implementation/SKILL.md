@@ -26,7 +26,11 @@ Deliver clean, tested, and working code for a single User Story (`US-XXX`) from 
 4. **Step 3 - REFACTOR (Clean & Optimize)**:
    - Remove duplicated code, improve variable naming, enforce modular boundaries, and add brief comments for complex logic.
    - Run the linter, static type checker, and full test suite to confirm zero regressions.
-5. **Commit & Handoff**:
+5. **Version Bump & Changelog (SemVer 2.0.0)**:
+   - Classify the change impact (`MAJOR`, `MINOR`, `PATCH`) using `skills/semantic-versioning/SKILL.md`.
+   - Bump the project version in the manifest or version source.
+   - Add an entry under `## [Unreleased]` in `docs/CHANGELOG.md` with the `US-XXX` and `FR-XX` references.
+6. **Commit & Handoff**:
    - Commit with format: `feat(US-XXX): [summary] [FR-XX]`.
    - Update the story status in `docs/sprints/sprint-N.md` to `IN_REVIEW`.
 
@@ -35,3 +39,5 @@ Deliver clean, tested, and working code for a single User Story (`US-XXX`) from 
 - [ ] Do all unit and integration tests pass?
 - [ ] Does the linter and compiler report zero errors and zero warnings?
 - [ ] Are all configuration values and secrets externalized to environment variables?
+- [ ] Is the project version bumped and does `docs/CHANGELOG.md` contain the matching `[Unreleased]` entry?
+- [ ] Does the bump class match the actual change impact (no breaking change under `MINOR` or `PATCH`)?

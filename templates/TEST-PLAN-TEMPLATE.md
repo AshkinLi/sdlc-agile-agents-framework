@@ -4,6 +4,7 @@
 | :--- | :--- |
 | **Test Plan ID** | `TP-001` |
 | **Target Sprint / Release** | `Sprint [N] / vX.Y.Z` |
+| **Release Version Under Test (SemVer)** | `X.Y.Z[-pre][+build]` |
 | **Author** | `QA Engineer Agent` |
 | **QA Sign-Off Status** | `PENDING / APPROVED / REJECTED` |
 
@@ -19,8 +20,20 @@
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | `BUG-001` | `US-101` | `P1-High` | `[Issue summary]` | `1. [...] 2. [...]` | `Expected: [...] Actual: [...]` | `OPEN / CLOSED` |
 
-## 3. Release Quality Gate Sign-Off (`Gate-DOD`)
+## 3. SemVer 2.0.0 & Version Validation
+| Check | Expected | Result |
+| :--- | :--- | :--- |
+| Version string validity | Matches `MAJOR.MINOR.PATCH[-pre][+build]` without leading zeroes | `PASS / FAIL` |
+| Version consistency | Matches PRD target release version, sprint backlog, changelog, and build artifact | `PASS / FAIL` |
+| Bump classification | `MAJOR` / `MINOR` / `PATCH` matches the actual change impact | `PASS / FAIL` |
+| Compatibility | `MINOR` / `PATCH` preserve backwards compatibility; `MAJOR` includes migration evidence | `PASS / FAIL` |
+
+Reference: `skills/semantic-versioning/SKILL.md`.
+
+## 4. Release Quality Gate Sign-Off (`Gate-DOD`)
 - [ ] 100% of `Must Have` Functional Requirements have passing automated tests.
 - [ ] Code coverage meets target threshold (`>= 80%`).
 - [ ] Zero `P0-Critical` and zero `P1-High` defects remain open.
 - [ ] Non-Functional Requirements (`NFR-XX`) verified.
+- [ ] Release version is valid SemVer 2.0.0 and consistent across PRD, sprint backlog, changelog, and artifacts.
+- [ ] The bump class matches the change impact, and no breaking change is shipped under `MINOR` or `PATCH`.

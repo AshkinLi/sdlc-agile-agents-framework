@@ -27,9 +27,14 @@ Create `docs/ARCHITECTURE.md`, interface contracts, and `docs/adr/ADR-XXX.md` fi
    - Use `templates/ADR-TEMPLATE.md` to record each major technology selection or architectural trade-off in `docs/adr/ADR-001-[topic].md`.
 6. **Define Source Directory Layout**:
    - Document the target folder structure for application source code and test suites.
+7. **Document the Public API and SemVer Impact**:
+   - List the public API surface (interfaces, schemas, events, CLI contracts, persisted data formats) in `docs/ARCHITECTURE.md`.
+   - Classify every contract change as `MAJOR`, `MINOR`, `PATCH`, or `NONE` and record the classification plus migration path in the related ADR (see `skills/semantic-versioning/SKILL.md`).
 
 ## 4. Validation Checklist
 - [ ] Does every `FR-XX` in `docs/PRD.md` map to at least one architectural component?
 - [ ] Does the design satisfy all `NFR-XX` constraints (latency, scaling, security)?
 - [ ] Are all Mermaid diagrams syntactically valid?
 - [ ] Are interface contracts complete with request inputs, outputs, and error states?
+- [ ] Is the public API surface explicitly documented in `docs/ARCHITECTURE.md`?
+- [ ] Does every ADR record the SemVer 2.0.0 impact and migration plan for its contract changes?

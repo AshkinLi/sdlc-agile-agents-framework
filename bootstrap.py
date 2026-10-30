@@ -4,8 +4,9 @@ Cross-Platform Bootstrap CLI for the SDLC + Agile + Multi-Agent Framework.
 
 Creates a target project with the framework definition files consolidated under
 `.agents/` (role definitions, skills, architecture specs, and templates),
-initializes the `docs/` workspace from templates, and configures the root
-`AGENTS.md` with the project technology stack.
+initializes the `docs/` workspace (including a SemVer 2.0.0 `CHANGELOG.md`)
+from templates, and configures the root `AGENTS.md` with the project
+technology stack.
 
 Generated project layout:
 
@@ -17,6 +18,7 @@ Generated project layout:
     │   ├── ARCHITECTURE.md
     │   ├── BACKLOG.md
     │   ├── TEST-PLAN.md
+    │   ├── CHANGELOG.md
     │   ├── adr/ADR-001-initial-architecture.md
     │   └── sprints/sprint-1.md
     └── .agents/
@@ -34,6 +36,7 @@ project root.
 import argparse
 from datetime import date
 from pathlib import Path
+import re
 import shutil
 import sys
 
@@ -54,6 +57,18 @@ FRAMEWORK_LOCATION_LINE = (
     "architecture specs, and templates."
 )
 
+# Official SemVer 2.0.0 regex (semver.org FAQ) with [.] and [+] classes
+# instead of escaped literal dots and plus signs.
+SEMVER_PATTERN = re.compile(
+    r"^(0|[1-9][0-9]*)[.](0|[1-9][0-9]*)[.](0|[1-9][0-9]*)"
+    r"(?:-((?:0|[1-9][0-9]*|[0-9]*[A-Za-z-][0-9A-Za-z-]*)"
+    r"(?:[.](?:0|[1-9][0-9]*|[0-9]*[A-Za-z-][0-9A-Za-z-]*))*))?"
+    r"(?:[+]([0-9A-Za-z-]+(?:[.][0-9A-Za-z-]+)*))?$"
+)
+
+# Operating-system junk that must never be copied into a generated project.
+IGNORED_FILES = {".DS_Store", "Thumbs.db", "desktop.ini"}
+
 README_TEMPLATE = """# {project_name}
 
 This project was initialized from the Universal SDLC + Agile + Multi-Agent
@@ -70,6 +85,8 @@ Cycle (SDLC), Agile methodologies, and autonomous AI Agents.
 | **Build Command** | `{build_cmd}` |
 | **Test Command** | `{test_cmd}` |
 | **Linter Command** | `{lint_cmd}` |
+| **Versioning** | `Semantic Versioning 2.0.0` |
+| **Initial Version** | `{initial_version}` |
 
 ## 2. Directory Structure
 
@@ -82,6 +99,7 @@ Cycle (SDLC), Agile methodologies, and autonomous AI Agents.
 │   ├── ARCHITECTURE.md
 │   ├── BACKLOG.md
 │   ├── TEST-PLAN.md
+│   ├── CHANGELOG.md
 │   ├── adr/
 │   │   └── ADR-001-initial-architecture.md
 │   └── sprints/
@@ -100,7 +118,8 @@ Cycle (SDLC), Agile methodologies, and autonomous AI Agents.
     │   ├── agile-backlog-management/SKILL.md
     │   ├── tdd-code-implementation/SKILL.md
     │   ├── automated-qa-validation/SKILL.md
-    │   └── cicd-release-orchestration/SKILL.md
+    │   ├── cicd-release-orchestration/SKILL.md
+    │   └── semantic-versioning/SKILL.md
     ├── architecture/
     │   ├── 01-framework-overview.md
     │   └── 02-agile-sdlc-workflow.md
@@ -108,7 +127,8 @@ Cycle (SDLC), Agile methodologies, and autonomous AI Agents.
         ├── PRD-TEMPLATE.md
         ├── ADR-TEMPLATE.md
         ├── SPRINT-BACKLOG-TEMPLATE.md
-        └── TEST-PLAN-TEMPLATE.md
+        ├── TEST-PLAN-TEMPLATE.md
+        └── CHANGELOG-TEMPLATE.md
 ```
 
 All framework definition files used by the agents live under `.agents/`; the
@@ -124,9 +144,31 @@ artifacts.
 | `.agents/skills/<skill>/SKILL.md` | Executable skill procedures |
 | `.agents/architecture/` | SDLC + Agile workflow specifications |
 | `.agents/templates/` | Reference artifact templates |
-| `docs/` | Project artifacts: PRD, architecture, backlog, sprint, test plan, ADRs |
+| `docs/` | Project artifacts: PRD, architecture, backlog, sprint, test plan, ADRs, changelog |
+| `docs/CHANGELOG.md` | SemVer 2.0.0 release history (single source of release notes) |
 
-## 4. Next Steps After Initialization
+## 4. Release Versioning (SemVer 2.0.0)
+
+This project uses [Semantic Versioning 2.0.0](https://semver.org/). Version
+increments must match the compatibility impact of each change:
+
+| Change type | Version bump |
+| :--- | :--- |
+| Backwards-incompatible public API change | `MAJOR` |
+| Backwards-compatible functionality or public API deprecation | `MINOR` |
+| Backwards-compatible bug fix | `PATCH` |
+| Initial development before a stable public API | `0.y.z` (start at `0.1.0`) |
+| Release candidate | `X.Y.Z-rc.N` |
+
+- The version MUST be identical in the project manifest, `docs/CHANGELOG.md`,
+  and the Git tag (`vMAJOR.MINOR.PATCH` or `vMAJOR.MINOR.PATCH-rc.N`).
+- Released versions and tags are immutable: never modify, reuse, or re-point
+  them; corrections require a new version.
+- Bump rules, precedence, validation commands, and per-role gates are defined in
+  `.agents/skills/semantic-versioning/SKILL.md` and
+  `.agents/architecture/02-agile-sdlc-workflow.md`.
+
+## 5. Next Steps After Initialization
 
 1. Open the project directory in your IDE or AI Agent CLI.
 2. Start Phase 1 (Discovery): Instruct the **Product Manager Agent**
@@ -174,6 +216,8 @@ def copy_tree(src_dir: Path, dst_dir: Path) -> int:
     dst_dir.mkdir(parents=True, exist_ok=True)
     copied = 0
     for item in src_dir.rglob("*"):
+        if item.name in IGNORED_FILES:
+            continue
         relative = item.relative_to(src_dir)
         target_item = dst_dir / relative
         if item.is_dir():
@@ -246,6 +290,14 @@ def main() -> int:
     parser.add_argument("-s", "--test", help="Project test command")
     parser.add_argument("-c", "--lint", help="Project linter command")
     parser.add_argument(
+        "--initial-version",
+        default="0.1.0",
+        help=(
+            "Initial Semantic Versioning 2.0.0 version recorded in "
+            "docs/CHANGELOG.md and docs/PRD.md (default: 0.1.0)"
+        ),
+    )
+    parser.add_argument(
         "-y",
         "--yes",
         action="store_true",
@@ -261,6 +313,20 @@ def main() -> int:
     args = parser.parse_args()
     framework_dir = Path(__file__).resolve().parent
     today_str = date.today().isoformat()
+
+    initial_version = args.initial_version.strip()
+    if initial_version.startswith("v"):
+        print(
+            "[ERROR] --initial-version must not include the 'v' tag prefix "
+            "(use 0.1.0 instead of v0.1.0)."
+        )
+        return 1
+    if not SEMVER_PATTERN.fullmatch(initial_version):
+        print(
+            f"[ERROR] --initial-version '{args.initial_version}' is not a valid "
+            "Semantic Versioning 2.0.0 version."
+        )
+        return 1
 
     print("==================================================================")
     print(" SDLC + Agile + Multi-Agent Framework Bootstrap")
@@ -295,7 +361,8 @@ def main() -> int:
     )
 
     print(f"\n[INFO] Initializing framework in: {target_dir}")
-    print(f"[INFO] Framework definitions: {target_dir / AGENTS_DIR}\n")
+    print(f"[INFO] Framework definitions: {target_dir / AGENTS_DIR}")
+    print(f"[INFO] Initial version: {initial_version}\n")
 
     # 1. Copy framework definition files into .agents/
     layout = (
@@ -318,6 +385,7 @@ def main() -> int:
             "build_cmd": build_cmd,
             "test_cmd": test_cmd,
             "lint_cmd": lint_cmd,
+            "initial_version": initial_version,
         },
         args.force,
     )
@@ -338,6 +406,8 @@ def main() -> int:
     # 3. Initialize docs/ workspace from templates
     doc_replacements = {
         "[Insert Product Name]": project_name,
+        "__INITIAL_VERSION__": initial_version,
+        "[Insert Target Release Version]": initial_version,
         "YYYY-MM-DD": today_str,
         "Sprint `[N]`": "Sprint `1`",
         "Sprint [N]": "Sprint 1",
@@ -354,6 +424,7 @@ def main() -> int:
             target_dir / "docs" / "sprints" / "sprint-1.md",
         ),
         ("TEST-PLAN-TEMPLATE.md", target_dir / "docs" / "TEST-PLAN.md"),
+        ("CHANGELOG-TEMPLATE.md", target_dir / "docs" / "CHANGELOG.md"),
     ]
     for template_name, destination in template_mappings:
         render_template(
@@ -399,7 +470,8 @@ def main() -> int:
     print(f"1. Open target project: cd {target_dir}")
     print("2. Review AGENTS.md (project stack) and README.md (layout)")
     print(f"3. Framework definition files: {target_dir / AGENTS_DIR}")
-    print("4. Start Phase 1: Instruct the Product Manager Agent")
+    print(f"4. Release versioning: SemVer 2.0.0, initial version {initial_version} (docs/CHANGELOG.md)")
+    print("5. Start Phase 1: Instruct the Product Manager Agent")
     print(f"   ({AGENTS_DIR}/roles/product-manager/AGENTS.md) to generate docs/PRD.md using")
     print(f"   {AGENTS_DIR}/skills/prd-generation/SKILL.md.")
     return 0

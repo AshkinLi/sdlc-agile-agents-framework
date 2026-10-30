@@ -21,9 +21,11 @@ Package, scan, deploy, and monitor QA-approved software releases with automated 
    - Scan repository history for accidentally committed secrets.
 3. **Artifact Build & Packaging**:
    - Build immutable release artifacts (Docker container image, binary executable, or mobile bundle) and generate SHA-256 checksums.
-4. **Release Versioning & Changelog**:
-   - Determine the next Semantic Version (`MAJOR.MINOR.PATCH`) based on conventional commits (`feat`, `fix`, `BREAKING CHANGE`).
-   - Update `CHANGELOG.md` with linked `US-XXX` and `FR-XX` IDs.
+4. **Release Versioning & Changelog (SemVer 2.0.0)**:
+   - Determine the next version from the merged change classifications: `MAJOR` for backwards-incompatible public API changes, `MINOR` for backwards-compatible functionality or deprecations, `PATCH` for backwards-compatible fixes (see `skills/semantic-versioning/SKILL.md`).
+   - Validate the version string against SemVer 2.0.0 and confirm it matches the project manifest and the target release version in `docs/PRD.md`.
+   - Create an immutable annotated tag (`vX.Y.Z`, or `vX.Y.Z-rc.N` for release candidates); never move, delete, or reuse a published tag.
+   - Move the `[Unreleased]` entries in `docs/CHANGELOG.md` under the released version with an ISO 8601 date, including linked `US-XXX` and `FR-XX` IDs.
 5. **Deployment & Smoke Verification**:
    - Deploy to staging, execute automated smoke tests against health endpoints, and promote to production.
    - If smoke tests or health metrics fail, trigger automated rollback to the previous stable version immediately.
@@ -33,3 +35,6 @@ Package, scan, deploy, and monitor QA-approved software releases with automated 
 - [ ] Is the release artifact reproducible and tagged with a semantic version?
 - [ ] Is `CHANGELOG.md` updated with all completed User Stories and bug fixes?
 - [ ] Are post-deployment smoke tests and rollback triggers verified?
+- [ ] Is the release version valid SemVer 2.0.0 and identical in the manifest, `docs/CHANGELOG.md`, and Git tag?
+- [ ] Is the release tag immutable, and does the changelog section match the released version?
+- [ ] Does the bump class match the change impact (no breaking change shipped as `MINOR` or `PATCH`)?

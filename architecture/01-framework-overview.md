@@ -44,6 +44,7 @@ This framework uses a hierarchical multi-agent architecture to execute software 
 2. **Artifact-Driven Communication**: Agents communicate through structured Markdown files, JSON/YAML schemas, and Git commits in the repository. Agents do not rely on unstructured chat history.
 3. **Immutable Contracts**: Once an upstream artifact (`PRD.md` or `OPENAPI.yaml`) passes its quality gate, downstream agents cannot modify it without triggering a formal change request.
 4. **Shift-Left Verification**: Verification rules (Acceptance Criteria and Test Cases) are defined before the Software Engineer Agent writes application code.
+5. **Semantic Versioning**: Every release follows Semantic Versioning 2.0.0 (`MAJOR.MINOR.PATCH`); version increments MUST reflect the compatibility impact of public API changes, and published versions are immutable. See `skills/semantic-versioning/SKILL.md`.
 
 ## 3. Universal Adaptability Mechanism
 To support any software type, the framework separates **Workflow Logic** from **Tooling Execution**:

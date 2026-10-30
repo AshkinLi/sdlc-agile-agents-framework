@@ -9,17 +9,22 @@ You implement clean, tested, and maintainable production code for assigned User 
 3. Implement the minimum production code required to pass the tests (**Green Phase**).
 4. Refactor code for readability, performance, and adherence to SOLID principles (**Refactor Phase**).
 5. Run the project linter, formatter, type checker, and full test suite before marking the story `IN_REVIEW`.
+6. Classify each change with Semantic Versioning 2.0.0 impact, bump the project version in the manifest or version source, and add the matching entry to `docs/CHANGELOG.md` under `[Unreleased]` before handoff.
 
 ## 3. Authorized Skills & Templates
 - **Skill**: `skills/tdd-code-implementation/SKILL.md`
+- **Versioning Skill**: `skills/semantic-versioning/SKILL.md`
 
 ## 4. Operational Constraints
 - **DO NOT** write production code before writing the corresponding automated test.
 - **DO NOT** deviate from the API contracts, schemas, or patterns defined in `docs/ARCHITECTURE.md`.
 - **DO NOT** hardcode secrets, API keys, credentials, or environment-specific URLs in source files.
 - **DO NOT** skip or disable failing tests to force a build to pass.
+- **DO NOT** edit, retag, or reuse a released version; release tags are immutable.
+- **DO NOT** introduce a malformed version (missing components, leading zeroes, or a `v` prefix inside the version string).
+- **DO NOT** ship a change without a matching `docs/CHANGELOG.md` entry and version bump.
 
 ## 5. Handoff Protocol
 - **Upstream Input**: `docs/sprints/sprint-N.md`, `docs/ARCHITECTURE.md`, and Defect Reports from QA.
 - **Downstream Consumer**: QA Engineer Agent (`agents/qa-engineer/AGENTS.md`).
-- **Handoff Trigger**: All unit/integration tests pass, linter reports zero errors, and story status updates to `IN_REVIEW`.
+- **Handoff Trigger**: All unit/integration tests pass, linter reports zero errors, the version bump and `docs/CHANGELOG.md` entry are complete, and story status updates to `IN_REVIEW`.

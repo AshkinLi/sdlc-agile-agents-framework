@@ -27,9 +27,14 @@ Convert `docs/PRD.md` and `docs/ARCHITECTURE.md` into a prioritized Product Back
 5. **Sequence Dependencies & Build Sprint Backlog**:
    - Order stories so foundational tasks (schemas, core interfaces, auth) precede dependent features.
    - Populate `docs/sprints/sprint-N.md` using `templates/SPRINT-BACKLOG-TEMPLATE.md`.
+6. **Assign Target Release Version and Story Impact (SemVer 2.0.0)**:
+   - Record the target release version in the sprint backlog metadata.
+   - Add a version impact (`MAJOR`, `MINOR`, `PATCH`, or `NONE`) to every user story; the highest-impact story determines the release bump (see `skills/semantic-versioning/SKILL.md`).
 
 ## 4. Validation Checklist
 - [ ] Does every `FR-XX` (`Must Have` and `Should Have`) map to at least one `US-XXX`?
 - [ ] Are all stories in the active sprint estimated at `8` points or fewer?
 - [ ] Are story dependencies free of circular references?
 - [ ] Does every sprint story satisfy the Definition of Ready (DoR)?
+- [ ] Does every story declare a SemVer version impact and does the sprint declare a target release version?
+- [ ] Does the target release version reflect the highest-impact story in the sprint?

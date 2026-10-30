@@ -4,6 +4,8 @@
 - **Date**: `YYYY-MM-DD`
 - **Author**: `System Architect Agent`
 - **Related PRD IDs**: `[FR-XX, NFR-XX]`
+- **SemVer Impact**: `MAJOR / MINOR / PATCH / NONE`
+- **Public API Affected**: `[Interfaces, schemas, events, CLI flags, persisted data formats, or "None".]`
 
 ## 1. Context & Problem Statement
 `[Describe the technical problem, architectural constraint, and why a decision is needed.]`
@@ -19,3 +21,9 @@ Chosen option: **Option `[X]` (`[Name]`)**, because `[clear rationale linking ba
 ## 4. Consequences
 - **Positive**: `[Benefits gained from this choice]`
 - **Negative / Risks**: `[Trade-offs accepted and mitigation strategy]`
+
+## 5. Versioning & Compatibility Impact
+- **Backwards Compatibility**: `PRESERVED / BREAKING`
+- **Required Version Bump**: `MAJOR / MINOR / PATCH / NONE`
+- **Deprecation / Migration Plan**: `[Steps, timeline, and target removal version, or "N/A".]`
+- **Verification**: `[How the impact and compatibility will be validated by QA.]`

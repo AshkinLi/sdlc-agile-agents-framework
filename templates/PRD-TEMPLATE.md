@@ -4,7 +4,9 @@
 | :--- | :--- |
 | **Document ID** | `PRD-001` |
 | **Product Name** | `[Insert Product Name]` |
-| **Version** | `1.0.0` |
+| **Document Version** | `1.0.0` |
+| **Target Release Version (SemVer)** | `[Insert Target Release Version]` |
+| **Release Version Impact** | `MAJOR / MINOR / PATCH` |
 | **Status** | `DRAFT / IN_REVIEW / APPROVED` |
 | **Author** | `Product Manager Agent` |
 | **Last Updated** | `YYYY-MM-DD` |
@@ -35,6 +37,12 @@
 ### 4.2 Out-of-Scope
 - `[Explicit feature or capability excluded from this release]`
 - `[Explicit feature or capability excluded from this release]`
+
+### 4.3 SemVer 2.0.0 Impact
+- **Target Release Version**: `[Insert Target Release Version]`
+- **Release Version Impact**: `MAJOR / MINOR / PATCH`
+- **Public API Breaking Changes**: `[List each breaking change with its migration note, or write "None".]`
+- **Deprecations**: `[List public API functionality deprecated in this release and the planned removal version, or write "None".]`
 
 ## 5. Functional Requirements (`FR`)
 

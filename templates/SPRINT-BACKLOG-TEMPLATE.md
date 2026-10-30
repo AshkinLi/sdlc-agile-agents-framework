@@ -4,14 +4,15 @@
 | :--- | :--- |
 | **Sprint Number** | `Sprint [N]` |
 | **Sprint Goal** | `[1-sentence measurable objective for this sprint]` |
+| **Target Release Version (SemVer)** | `[vX.Y.Z]` |
 | **Start / End Date** | `YYYY-MM-DD` to `YYYY-MM-DD` |
 | **Planned Capacity** | `[Total Story Points]` |
 
 ## 1. Sprint Task Board
-| Story ID | Linked FR | Title | Story Points | Dependencies | Status | Assigned Agent |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `US-101` | `FR-01` | `[Story Title]` | `3` | `None` | `TODO` | `SWE-Agent` |
-| `US-102` | `FR-02` | `[Story Title]` | `5` | `US-101` | `TODO` | `SWE-Agent` |
+| Story ID | Linked FR | Title | Story Points | Version Impact | Dependencies | Status | Assigned Agent |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| `US-101` | `FR-01` | `[Story Title]` | `3` | `MAJOR / MINOR / PATCH / NONE` | `None` | `TODO` | `SWE-Agent` |
+| `US-102` | `FR-02` | `[Story Title]` | `5` | `MINOR` | `US-101` | `TODO` | `SWE-Agent` |
 
 ---
 
@@ -22,6 +23,7 @@
 - **Architecture Reference**: `docs/ARCHITECTURE.md#[section]`
 - **Story Statement**: As a `[Persona]`, I want to `[Action]`, so that `[Value]`.
 - **Story Points**: `3`
+- **Version Impact**: `MAJOR / MINOR / PATCH / NONE`
 - **Status**: `TODO / IN_PROGRESS / IN_REVIEW / DONE / BLOCKED`
 - **Acceptance Criteria**:
   ```gherkin
@@ -35,3 +37,4 @@
   - [x] Architecture contract defined
   - [x] Story points <= 8
   - [x] Testable Gherkin criteria attached
+  - [x] Version impact classified (`MAJOR` / `MINOR` / `PATCH` / `NONE`)
